@@ -1,7 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import { timezonesSlice } from '@/features';
+
 export const store = configureStore({
-    reducer: {},
+    reducer: {
+        timezones: timezonesSlice.reducer,
+    },
     devTools: true,
 });
 

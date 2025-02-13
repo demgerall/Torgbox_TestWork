@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion, Variants } from 'framer-motion';
 import classNames from 'classnames';
 
-import styles from './WatchList.module.css';
+import { getTimezones } from '@/features';
+import { useAppDispatch, useAppSelector } from '@/shared/libs/hooks';
+
+import styles from './WatchList.module.scss';
 
 interface WatchListProps {
     className?: string;
@@ -10,6 +13,16 @@ interface WatchListProps {
 
 export const WatchList = (props: WatchListProps) => {
     const { className = '' } = props;
+
+    const dispatch = useAppDispatch();
+
+    const { choosedTimezones, availableTimezones } = useAppSelector(
+        ({ timezones }) => timezones,
+    );
+
+    useEffect(() => {
+        dispatch(getTimezones());
+    }, [dispatch]);
 
     const cardsAnimationVariants: Variants = {
         hidden: {
