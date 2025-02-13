@@ -1,2 +1,55 @@
 @use 'scss-reset/reset';
 @use 'variables/globals';
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) #3e3e3e;
+
+    &::-webkit-scrollbar {
+        height: 12px;
+        width: 12px;
+    }
+    &::-webkit-scrollbar-track {
+        background: #3e3e3e;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: var(--color-primary);
+        border: 3px solid #3e3e3e;
+    }
+}
+
+html {
+    background-color: var(--background-color);
+
+    transition: all 0.3s ease-in-out;
+}
+
+body {
+    box-sizing: border-box;
+    overflow-x: hidden;
+
+    color: var(--text-color);
+
+    transition: background-color 0.3s ease-in-out;
+
+    a,
+    button {
+        text-decoration: none;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    a,
+    button {
+        color: var(--text-color);
+        font-family: var(--font-montserrat);
+        font-weight: var(--weight-regular);
+
+        transition: color 0.3s ease-in-out;
+    }
+}

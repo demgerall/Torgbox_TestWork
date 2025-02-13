@@ -1,0 +1,33 @@
+.circleChip {
+    width: 64px;
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow:
+        #ffffff1a -2px -2px 4px 0px inset,
+        #00000059 2px 2px 4px 0px inset;
+
+    border-radius: 50%;
+    border: 2px solid transparent;
+
+    transition: border 0.3s ease-in-out;
+
+    //  Click
+    &:active {
+        border: 2px solid var(--color-primary);
+    }
+
+    //Hover
+    @media (hover: hover) {
+        &:hover {
+            border: 2px solid var(--color-primary);
+        }
+    }
+
+    .img {
+        width: 50%;
+    }
+}

@@ -1,0 +1,81 @@
+.switchButton {
+    width: 84px;
+    height: 44px;
+    padding: 2px;
+
+    position: relative;
+
+    border: 2px solid transparent;
+    border-radius: 22px;
+
+    -webkit-box-shadow: 4px 4px 8px 0px var(--shadow-color);
+    -moz-box-shadow: 4px 4px 8px 0px var(--shadow-color);
+    box-shadow: 4px 4px 8px 0px var(--shadow-color);
+
+    transition: border-color 0.3s ease-in-out;
+
+    //  Click
+    &:active {
+        border: 2px solid var(--color-primary);
+    }
+
+    //  Hover
+    @media (hover: hover) {
+        &:hover {
+            border: 2px solid var(--color-primary);
+        }
+    }
+
+    &_switcher {
+        height: 100%;
+        width: 50%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 100%;
+
+        filter: invert(100%);
+        background-color: var(--background-color);
+
+        &__pressed {
+            transform: translateX(100%);
+            animation: isPressed 0.3s ease-in-out;
+        }
+        &__notPressed {
+            transform: translateX(0%);
+            animation: isNotPressed 0.3s ease-in-out;
+        }
+    }
+
+    &_iconLeft {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(calc(-125% + 4px), calc(-50% + 1px));
+    }
+    &_iconRight {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(calc(25% - 4px), calc(-50% + 1px));
+    }
+}
+
+@keyframes isPressed {
+    from {
+        transform: translateX(0%);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+@keyframes isNotPressed {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0%);
+    }
+}

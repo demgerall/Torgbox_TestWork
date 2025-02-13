@@ -1,0 +1,19 @@
+@use '@/App/styles/mixins/fontMixins' as mixins;
+
+.clockSection {
+    width: 100%;
+    padding: 5vh 10vw;
+
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+
+    .title {
+        @include mixins.heading;
+
+        &__primary {
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+    }
+}

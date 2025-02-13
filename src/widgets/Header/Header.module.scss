@@ -1,0 +1,48 @@
+@use '@/App/styles/mixins/fontMixins' as mixins;
+
+.header {
+    width: 100%;
+    height: 100px;
+    padding: 0 10vw;
+
+    position: sticky;
+    top: 0;
+    z-index: 101;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: var(--background-color);
+
+    transition: all 0.3s ease-in-out;
+
+    &__scrolled {
+        -webkit-box-shadow: 4px 4px 8px 0px var(--shadow-color);
+        -moz-box-shadow: 4px 4px 8px 0px var(--shadow-color);
+        box-shadow: 4px 4px 8px 0px var(--shadow-color);
+    }
+
+    &_logo_link {
+        display: flex;
+        align-items: center;
+
+        @include mixins.logo-text;
+
+        &__primary {
+            color: var(--color-primary);
+        }
+
+        &__small {
+            margin-left: 8px;
+
+            @include mixins.logo-text__small;
+        }
+    }
+
+    &_buttonBlock {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+}

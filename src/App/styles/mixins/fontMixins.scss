@@ -1,0 +1,51 @@
+@use './../variables/globals';
+
+@mixin logo-text {
+    font-family: var(--font-montserrat);
+    font-size: var(--font-size-logo-text);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--letter-spacing);
+    line-height: var(--line-height);
+}
+@mixin logo-text__small {
+    font-family: var(--font-montserrat);
+    font-size: var(--font-size-logo-text__small);
+    font-weight: var(--weight-regular);
+    letter-spacing: var(--letter-spacing);
+    line-height: var(--line-height);
+}
+@mixin heading {
+    font-family: var(--font-montserrat);
+    font-size: var(--font-size-heading);
+    font-weight: var(--weight-regular);
+    letter-spacing: var(--letter-spacing);
+    line-height: var(--line-height);
+}
+@mixin subheading {
+    font-family: var(--font-montserrat);
+    font-size: var(--font-size-subheading);
+    font-weight: var(--weight-regular);
+    letter-spacing: var(--letter-spacing);
+    line-height: var(--line-height);
+}
+@mixin title {
+    font-family: var(--font-montserrat);
+    font-size: var(--font-size-title);
+    font-weight: var(--weight-regular);
+    letter-spacing: var(--letter-spacing);
+    line-height: var(--line-height);
+}
+@mixin button {
+    font-family: var(--font-montserrat);
+    font-size: var(--font-size-button);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--letter-spacing);
+    line-height: var(--line-height);
+}
+@mixin text-label {
+    font-family: var(--font-montserrat);
+    font-size: var(--font-size-text-label);
+    font-weight: var(--weight-regular);
+    letter-spacing: var(--letter-spacing);
+    line-height: var(--line-height);
+}

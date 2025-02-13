@@ -1,0 +1,32 @@
+html[data-theme='dark'] {
+    //  Text
+    --text-color: #ececec;
+    //  Body
+    --background-color: #191820;
+    // Shadows
+    --shadow-color: #000000ca;
+    --shadow-card: #ffffff0d -4px -4px 12px 0px, #000000 4px 4px 12px 0px,
+        #ffffff00 -22px -14px 14px 2px inset, #00000000 8px 4px 20px 12px inset;
+    // Skeleton Colors
+    --skeleton-base-color: #1c1b24;
+    --skeleton-highlight-color: #1f1e27;
+}
+
+html[data-theme='light'] {
+    //  Text
+    --text-color: #191820;
+    //  Body
+    --background-color: #ececec;
+    // Shadows
+    --shadow-color: #00000036;
+    --shadow-card: #ffffffcc -8px -8px 12px 0px, #0000000d 8px 8px 12px 0px,
+        #ffffff00 -2px -2px 4px 0px inset, #00000000 2px 2px 4px 0px inset;
+    //  Skeleton Colors
+    --skeleton-base-color: #e6e4e4;
+    --skeleton-highlight-color: #e8e8e8;
+}
+
+html {
+    --color-primary: #b625a5;
+    --test-color: #000000;
+}
