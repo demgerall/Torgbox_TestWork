@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, Variants } from 'framer-motion';
 import classNames from 'classnames';
 
@@ -6,6 +6,8 @@ import { getTimezones } from '@/features';
 import { useAppDispatch, useAppSelector } from '@/shared/libs/hooks';
 
 import styles from './WatchList.module.scss';
+import { Watch } from '@/shared/ui/Watch';
+import { get } from 'node_modules/axios/index.cjs';
 
 interface WatchListProps {
     className?: string;
@@ -37,13 +39,25 @@ export const WatchList = (props: WatchListProps) => {
     };
 
     return (
-        <motion.div
+        <motion.ul
             className={classNames(styles.watchList, [className])}
             initial="hidden"
             animate="visible"
             viewport={{ amount: 0.2, once: true }}
         >
-            WatchList
-        </motion.div>
+            {choosedTimezones.map((timezone, index) => (
+                <motion.li
+                    key={index}
+                    className={styles.watchList__card}
+                    custom={index + 1}
+                    variants={cardsAnimationVariants}
+                >
+                    <Watch
+                        name={timezone.name}
+                        timezoneOffset={timezone.timezoneOffset}
+                    />
+                </motion.li>
+            ))}
+        </motion.ul>
     );
 };
