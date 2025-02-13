@@ -1,0 +1,56 @@
+{
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/jsx-runtime",
+        "react-app",
+        "prettier",
+        "plugin:prettier/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": true,
+        "tsconfigRootDir": "./"
+    },
+    "plugins": ["@typescript-eslint", "prettier"],
+    "root": true,
+    "ignorePatterns": ["dist", "vite.config.ts"],
+    "rules": {
+        "max-len": ["error", { "code": 120 }],
+        "@typescript-eslint/consistent-type-imports": [
+            2,
+            { "fixStyle": "separate-type-imports" }
+        ],
+        "prettier/prettier": "error",
+        "import/order": [
+            "error",
+            {
+                "groups": ["builtin", "external", "internal"],
+                "pathGroups": [
+                    {
+                        "pattern": "react",
+                        "group": "external",
+                        "position": "before"
+                    }
+                ],
+                "pathGroupsExcludedImportTypes": ["react"],
+                "newlines-between": "always",
+                "alphabetize": {
+                    "order": "asc",
+                    "caseInsensitive": true
+                }
+            }
+        ]
+    },
+    "overrides": [
+        { "files": ["*.{c,m,}{t,j}s", "*.{t,j}sx"] },
+        { "files": ["*{test,spec}.{t,j}s?(x)"], "env": { "jest": true } }
+    ],
+    "settings": {
+        "import/resolver": {
+            "alias": {
+                "map": [["@", "./src"]],
+                "extensions": [".js", ".jsx", ".ts", ".tsx"]
+            }
+        }
+    }
+}
