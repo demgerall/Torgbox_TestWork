@@ -6,9 +6,8 @@ import {
 import axios from 'axios';
 
 import { timezoneType } from '@/shared/libs/types';
-import { c } from 'node_modules/framer-motion/dist/types.d-6pKw1mTI';
 
-//  A function to get all seminars from server data
+//  A function to get all timezones from data
 export const getTimezones = createAsyncThunk(
     'timezones/getTimezones',
     async (__, thunkApi) => {
@@ -22,43 +21,67 @@ export const getTimezones = createAsyncThunk(
     },
 );
 
-//  A function to delete seminar by id from server data
-// export const deleteTimezonesById = createAsyncThunk(
-//     'timezones/deleteTimezonesById',
-//     async (id: number, thunkApi) => {
-//         try {
-//             await axios.delete(`http://localhost:3000/seminars/${id}`);
-//             return id;
-//         } catch (error) {
-//             console.error(error);
-//             throw error;
-//         }
-//     },
-// );
+//  A function to change timezone by id in choosed
+//  @params
+//  ids: [deleting id, adding id]
+export const changeTimezoneById = createAsyncThunk(
+    'timezones/changeTimezoneById',
+    async (ids: [number, number], thunkApi) => {
+        try {
+            const response = await axios.get('data/timezones.json');
+            return response.data
+                .filter((timezone: timezoneType) => {
+                    return timezone.id === ids[0];
+                })
+                .concat(
+                    response.data.filter((timezone: timezoneType) => {
+                        return timezone.id === ids[1];
+                    }),
+                );
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    },
+);
 
-// export const addTimezonesById = createAsyncThunk(
-//     'timezones/addTimezonesById',
-//     async (__, thunkApi) => {
-//         try {
-//             const response = await axios.put(
-//                 `http://localhost:3000/seminars/${seminar.id}`,
-//                 seminar,
-//             );
-//             return response.data;
-//         } catch (error) {
-//             console.error(error);
-//             throw error;
-//         }
-//     },
-// );
+//  A function to delete timezone by id from choosed
+export const deleteTimezoneById = createAsyncThunk(
+    'timezones/deleteTimezoneById',
+    async (id: number, thunkApi) => {
+        try {
+            const response = await axios.get('data/timezones.json');
+            return response.data.filter((timezone: timezoneType) => {
+                return timezone.id === id;
+            })[0];
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    },
+);
+
+//  A function to add timezone by id to choosed
+export const addTimezoneById = createAsyncThunk(
+    'timezones/addTimezoneById',
+    async (id: number, thunkApi) => {
+        try {
+            const response = await axios.get('data/timezones.json');
+            return response.data.filter((timezone: timezoneType) => {
+                return timezone.id === id;
+            })[0];
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    },
+);
 
 interface StateSchema {
     allTimezones: Array<timezoneType>;
     choosedTimezones: Array<timezoneType>;
     availableTimezones: Array<timezoneType>;
     isLoading: boolean;
-    isLoadingSuccess: boolean;
-    errMessage: SerializedError | undefined;
 }
 
 const initialState: StateSchema = {
@@ -66,8 +89,6 @@ const initialState: StateSchema = {
     choosedTimezones: [],
     availableTimezones: [],
     isLoading: false,
-    isLoadingSuccess: false,
-    errMessage: undefined,
 };
 
 export const timezonesSlice = createSlice({
@@ -78,18 +99,19 @@ export const timezonesSlice = createSlice({
         builder
             .addCase(getTimezones.pending, state => {
                 state.isLoading = true;
-                state.isLoadingSuccess = false;
             })
             .addCase(getTimezones.fulfilled, (state, action) => {
                 state.allTimezones = action.payload;
-                state.choosedTimezones = state.allTimezones.filter(
-                    (item: timezoneType) => {
-                        return (
-                            item.timezoneOffset ===
-                            -new Date().getTimezoneOffset()
-                        );
-                    },
-                );
+
+                state.choosedTimezones =
+                    localStorage.choosedTimezones !== undefined
+                        ? JSON.parse(localStorage.choosedTimezones)
+                        : state.allTimezones.filter((item: timezoneType) => {
+                              return (
+                                  item.timezoneOffset ===
+                                  -new Date().getTimezoneOffset()
+                              );
+                          });
                 state.availableTimezones = state.allTimezones.filter(
                     (item: timezoneType) => {
                         return state.choosedTimezones.every(timezones => {
@@ -100,46 +122,90 @@ export const timezonesSlice = createSlice({
                     },
                 );
                 state.isLoading = false;
-                state.isLoadingSuccess = true;
+                localStorage.choosedTimezones = JSON.stringify(
+                    state.choosedTimezones,
+                );
             })
             .addCase(getTimezones.rejected, (state, action) => {
                 state.isLoading = false;
-                state.isLoadingSuccess = false;
-                state.errMessage = action.error;
+            })
+            .addCase(addTimezoneById.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(addTimezoneById.fulfilled, (state, action) => {
+                state.choosedTimezones = [
+                    ...state.choosedTimezones,
+                    action.payload,
+                ];
+                state.availableTimezones = state.availableTimezones.filter(
+                    (timezone: timezoneType) => {
+                        return timezone.id !== action.payload.id;
+                    },
+                );
+                state.isLoading = false;
+                localStorage.choosedTimezones = JSON.stringify(
+                    state.choosedTimezones,
+                );
+            })
+            .addCase(addTimezoneById.rejected, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(deleteTimezoneById.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(deleteTimezoneById.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.choosedTimezones = state.choosedTimezones.filter(
+                    (timezone: timezoneType) => {
+                        return timezone.id !== action.payload.id;
+                    },
+                );
+                state.availableTimezones = state.allTimezones.filter(
+                    (item: timezoneType) => {
+                        return state.choosedTimezones.every(timezones => {
+                            return item.id !== timezones.id;
+                        });
+                    },
+                );
+                localStorage.choosedTimezones = JSON.stringify(
+                    state.choosedTimezones,
+                );
+            })
+            .addCase(deleteTimezoneById.rejected, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(changeTimezoneById.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(changeTimezoneById.fulfilled, (state, action) => {
+                state.isLoading = false;
+                const newChoosedTimezones = JSON.parse(
+                    JSON.stringify(state.choosedTimezones),
+                );
+                const indexOfChangedElement = newChoosedTimezones.findIndex(
+                    (timezone: timezoneType) =>
+                        timezone.id === action.payload[0].id,
+                );
+                if (indexOfChangedElement !== -1) {
+                    newChoosedTimezones[indexOfChangedElement] =
+                        action.payload[1];
+                }
+                state.choosedTimezones = JSON.parse(
+                    JSON.stringify(newChoosedTimezones),
+                );
+                state.availableTimezones = state.allTimezones.filter(
+                    (item: timezoneType) => {
+                        return state.choosedTimezones.every(timezones => {
+                            return item.id !== timezones.id;
+                        });
+                    },
+                );
+                localStorage.choosedTimezones = JSON.stringify(
+                    state.choosedTimezones,
+                );
+            })
+            .addCase(changeTimezoneById.rejected, (state, action) => {
+                state.isLoading = false;
             });
-        // .addCase(deleteSeminarById.pending, state => {
-        //     state.isLoading = true;
-        //     state.isActionSuccess = false;
-        // })
-        // .addCase(deleteSeminarById.fulfilled, (state, action) => {
-        //     state.isLoading = false;
-        //     state.isActionSuccess = true;
-        //     state.seminars = state.seminars.filter(item => {
-        //         return item.id !== action.payload;
-        //     });
-        // })
-        // .addCase(deleteSeminarById.rejected, (state, action) => {
-        //     state.isLoading = false;
-        //     state.isActionSuccess = false;
-        //     state.errMessage = action.error;
-        // })
-        // .addCase(editSeminarById.pending, state => {
-        //     state.isLoading = true;
-        //     state.isActionSuccess = false;
-        // })
-        // .addCase(editSeminarById.fulfilled, (state, action) => {
-        //     state.seminars = state.seminars.map(item => {
-        //         return item.id === action.payload.id
-        //             ? action.payload
-        //             : item;
-        //     });
-        //     state.isLoading = false;
-        //     state.isActionSuccess = true;
-        // })
-        // .addCase(editSeminarById.rejected, (state, action) => {
-        //     state.isLoading = false;
-        //     state.isActionSuccess = false;
-        //     state.errMessage = action.error;
-        // });
     },
 });
