@@ -1,50 +1,86 @@
-# React + TypeScript + Vite
+# Тестовое задание для Torgbox
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Запуск проекта
 
-Currently, two official plugins are available:
+Для запуска проекта вам нужно **склонировать** репозиторий и в терминале прописать команду `npm run start`.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+> [!NOTE]
+> По умолчанию страница запустится по адресу: http://localhost:3000/
 
-## Expanding the ESLint configuration
+## Описание проекта и обоснование выбранных технологий
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Описание страницы
 
-- Configure the top-level `parserOptions` property like this:
+Сайт представляет собой демонстрационную страницу с _хедером_, _приветственной секцией_, _секцией со списком часов_ и _секцией контактов_. 
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+В хедере есть **свитчер**, с помощью которого можно изменить тему страницы (тема сохраняется в `localStorage`, а также автоматически определяется при первом посещении на основе настроек браузера). 
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+В списке часов автоматически первыми отображаются **часы с вашим часовым поясом**, дальнейшие изменения списка сохраняются в `localStorage`. Также в этой секции присутствует **кнопка сброса сохранённых часов**. В списке может быть от 1 до 10 часов одновременно. Если часов меньше 10, на странице отображается **кнопка добавления часов**, которая вызывает **модальное окно** со всеми доступными часовыми поясами. Если в списке несколько часов, то на их карточках также отображается **кнопка удаления**.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### Обоснование выбранных технологий, не являющихся обязательными
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+1. **SCSS** был выбран благодаря его возможностям для удобной и структурированной стилизации компонентов, что значительно упрощает поддержку и масштабирование стилей;
+2. **TypeScript** был выбран для обеспечения строгой типизации, что повышает надежность кода и упрощает его чтение и отладку;
+3. **React Router** был добавлен с самого начала для обеспечения гибкости в навигации и создания основы для будущего расширения функциональности проекта (это моя личная цель по развитию проекта);
+4. **Axios** был выбран для выполнения сетевых запросов благодаря его удобству и моему опыту работы с ним;
+5. **Framer Motion** был использован для создания плавных анимаций появления элементов на странице, что добавляет интерфейсу динамичности и визуальной привлекательности.
+6. **Skeleton** был выбран для реализации лоадера, который отображается до полной загрузки компонентов часов, обеспечивая пользователю визуальную обратную связь и улучшая восприятие загрузки.
+
+## Описание структуры проекта
+
+В данном проекте я придерживался методологии **FSD**. Все слои связаны между друг другом с помощью `Public API` (файл **index.ts** в директории каждого слоя).
+
+> [!IMPORTANT]
+> Далее будут описаны только слои и компоненты, необходимые для реализации тестового задания. Компоненты, добавленные по моей инициативе, здесь описываться не будут, чтобы не перегружать описание проекта элементами, не относящимися к заданию.
+
+1. Слой ***app*** (слой в котором находятся файлы, связанные непосредственно с работой всего приложения в целом)
+   - `App.tsx` - Компонент приложения
+   - `/store/store.ts` - Создание и конфигурация Redux стора
+   - `/styles` - Срез с базовыми настройками стилей, переменными для цветов и шрифтов, миксинами для шрифтов.
+
+2. Слой ***pages*** (слой в котором находятся компоненты страниц)
+   - `/Home` - Срез с компонентом стартовой страницы (`Home.tsx`) и ее стилями (`Home.module.scss`)
+
+3. Слой **widgets** (слой с большими самодостаточными компонентами)
+   - `/Section` - Срез с компонентами секций страниц
+  
+     - `/ClockSection` - Срез с компонентом секции с списком часов (`ClockSection.tsx`) и ее стилями (`ClockSection.module.scss`)
+    
+4. Слой **features** (слой в котором находятся _фичи_ страницы)
+   - `/WatchList` - Срез с компонентом списка часов (`WatchList.tsx`) и его стилями (`WatchList.module.scss`), а также с `api`
+   
+     - `api` - ts файл с слайсом, редьюсерами, экшенами и асинхронными функциями для часовых поясов для стора
+    
+5. Слой **entities** (слой в котором находятся _сущности_ страницы)
+   - `/WatchCard` - Срез с компонентом карточки часов (`WatchCard.tsx`) и его стилями (`WatchCard.module.scss`)
+  
+6. Слой **shared** (слой с мелкими и глупыми переиспользуемыми компонентами)
+   - `/assets` - Срез с ассетами
+     
+     - `/icons` - Директория с `svg` иконками
+
+   - `/libs` - Срез с файлами пользовательских хуков, енумов, типов
+
+     - `/hooks` - Директория с хуками
+   
+       - `reduxHooks.ts` - Файл с типизированными хуками для нормальной работы Redux с TypeScript
+      
+     - `/types` - Директория с типами
+   
+       - `timezoneType.ts` - Файл с описанием типа для объекта часового пояса
+     
+   - `/ui` - Срез с ui компонентами
+
+     - `/Buttons` - Директория с различными компонентами кнопок
+   
+       - `/Button` - Директория компонента обычной кнопки (`Button.tsx`) и ее стилей (`Button.module.scss`)
+     
+     - `/Modal` - Директория с компонентом модального окна (`Modal.tsx`) и директорией компонента контоля модального окна (`/ModalControl/ModalControl.tsx`)
+     - `/Portal` - Директория компонента портала (`Portal.tsx`), который осуществяет монтирование модального окна в **body** страницы из любого другого компонента
+     - `/Selectors` - Директория для компонентов селекторов
+      
+       - `/TimezoneSelector` - Директория компонента селектора для часовых поясов (`TimezoneSelector.tsx`) и его стилей (`TimezoneSelector.module.scss`)
+     
+     - `/Watch` - Директория с компонентом самих часов/циферблата (`Watch.tsx`) и его стилей (`Watch.module.scss`)
+
+Также существует `public` директория с **данными** часовых поясов и **иконками** (находятся в `public` для дальнейшего **деплоя на GitHub Pages**)
