@@ -1,0 +1,68 @@
+.modal {
+    width: 100%;
+    height: 100%;
+
+    position: fixed;
+    inset: 0;
+    z-index: 1001;
+
+    &__opened .content {
+        animation: modalOpen 0.3s ease-in-out;
+    }
+
+    &__is_closing .content {
+        animation: modalClose 0.3s ease-in-out;
+    }
+
+    .overlay {
+        width: 100%;
+        height: 100%;
+
+        background-color: #00000040;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .content {
+            max-width: 75%;
+            max-height: 75%;
+            padding: 32px 64px;
+
+            display: flex;
+            flex-flow: column nowrap;
+            gap: 24px;
+
+            background-color: var(--background-color);
+
+            border-radius: 32px;
+
+            transition: all 0.3s ease-in-out;
+
+            .controls {
+                align-self: end;
+
+                display: flex;
+                justify-content: flex-end;
+            }
+        }
+    }
+}
+
+@keyframes modalOpen {
+    from {
+        transform: scale(0.2);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+@keyframes modalClose {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(0.2);
+    }
+}

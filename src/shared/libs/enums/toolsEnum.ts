@@ -12,4 +12,5 @@ export enum toolsEnum {
     figma = 'figma',
     adobe_photoshop = 'adobe-photoshop',
     skeleton = 'skeleton',
+    axios = 'axios',
 }

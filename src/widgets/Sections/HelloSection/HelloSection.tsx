@@ -23,8 +23,9 @@ export const HelloSection = (props: HelloSectionProps) => {
         toolsEnum.vite,
         toolsEnum.redux,
         toolsEnum.react_router,
-        toolsEnum.react_hook_form,
+        toolsEnum.axios,
         toolsEnum.framer_motion,
+        toolsEnum.skeleton,
     ];
 
     const textAnimationVariants: Variants = {
@@ -83,7 +84,7 @@ export const HelloSection = (props: HelloSectionProps) => {
                     Demid Chebakov
                 </span>
                 <br />
-                This is my Frontend Developer React (Junior) testwork.
+                This is my Frontend Developer React (Junior) test work.
             </motion.h1>
             <motion.div
                 className={styles.usedToolsBlock}

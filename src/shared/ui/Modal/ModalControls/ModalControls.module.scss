@@ -1,0 +1,19 @@
+.modalCloseButton {
+    transition: all 0.3s ease-in-out;
+
+    //  Click
+    &:active {
+        scale: 1.2;
+    }
+
+    //  Hover
+    @media (hover: hover) {
+        &:hover {
+            scale: 1.2;
+        }
+    }
+
+    html[data-theme='light'] & {
+        filter: invert(100%);
+    }
+}

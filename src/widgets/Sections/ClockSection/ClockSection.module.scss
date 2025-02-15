@@ -16,4 +16,29 @@
             font-weight: 600;
         }
     }
+
+    .watchBlock {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 64px;
+    }
+
+    .buttonsBlock {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.modal_title {
+    @include mixins.title;
+}
+
+.modal_availableTimezonesBlock {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
 }

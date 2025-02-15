@@ -1,0 +1,82 @@
+@use '@/App/styles/mixins/fontMixins' as mixins;
+
+.timezoneSelector {
+    position: relative;
+
+    @include mixins.select;
+
+    &__selected {
+        padding: 10px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+
+        border: 2px solid var(--background-color);
+        border-radius: 24px;
+
+        background-color: var(--background-color);
+
+        cursor: pointer;
+
+        transition: all 0.3s ease-in-out;
+
+        //  Click
+        &:active {
+            border-color: var(--color-primary);
+        }
+
+        //  Hover
+        @media (hover: hover) {
+            &:hover {
+                border-color: var(--color-primary);
+            }
+        }
+    }
+
+    .options {
+        max-height: 200px;
+
+        overflow-y: scroll;
+
+        position: absolute;
+        top: 100%;
+        left: 0;
+
+        border-radius: 4px;
+
+        background-color: #403e41;
+        box-shadow: var(--shadow-card);
+
+        z-index: 1000;
+
+        transition: all 0.3s ease-in-out;
+
+        &_option {
+            padding: 8px;
+
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            white-space: wrap;
+
+            border: 2px solid var(--background-color);
+
+            cursor: pointer;
+
+            //  Click
+            &:active {
+                border-color: var(--color-primary);
+            }
+
+            //  Hover
+            @media (hover: hover) {
+                &:hover {
+                    border-color: var(--color-primary);
+                }
+            }
+        }
+    }
+}

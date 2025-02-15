@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { AppRoutes } from './routes/AppRoutes';
 import { Header } from '@/widgets';
 
+import 'react-loading-skeleton/dist/skeleton.css';
+
 export const App = () => {
     const [scrolled, setScrolled] = useState(false);
 

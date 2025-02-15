@@ -1,0 +1,10 @@
+.watchCard {
+    padding: 24px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    border-radius: 24px;
+    box-shadow: var(--shadow-card);
+}

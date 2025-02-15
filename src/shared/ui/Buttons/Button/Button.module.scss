@@ -1,0 +1,64 @@
+@use '@/App/styles/mixins/fontMixins' as mixins;
+
+.button {
+    padding: 12px 14px;
+
+    @include mixins.button;
+
+    box-shadow:
+        #ffffff1a -2px -2px 4px 0px inset,
+        #00000059 2px 2px 4px 0px inset;
+
+    border-radius: 32px;
+    border: 2px solid transparent;
+
+    transition: all 0.3s ease-in-out;
+
+    //  Click
+    &:active {
+        border-color: var(--color-primary);
+    }
+
+    //Hover
+    @media (hover: hover) {
+        &:hover {
+            border-color: var(--color-primary);
+        }
+    }
+
+    &__warn {
+        color: #e01414;
+
+        //  Click
+        &:active {
+            border-color: #e01414;
+        }
+
+        //Hover
+        @media (hover: hover) {
+            &:hover {
+                border-color: #e01414;
+            }
+        }
+    }
+
+    &__accept {
+        color: #2fb71e;
+
+        //  Click
+        &:active {
+            border-color: #2fb71e;
+        }
+
+        //Hover
+        @media (hover: hover) {
+            &:hover {
+                border-color: #2fb71e;
+            }
+        }
+    }
+}
+
+html[data-theme='light'] .button svg {
+    filter: invert(100%);
+}

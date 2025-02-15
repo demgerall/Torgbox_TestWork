@@ -1,2 +1,8 @@
 export { WatchList } from './WatchList/WatchList';
-export { timezonesSlice, getTimezones } from './WatchList/api/timezonesReducer';
+export {
+    timezonesSlice,
+    getTimezones,
+    addTimezoneById,
+    deleteTimezoneById,
+    changeTimezoneById,
+} from './WatchList/api/timezonesReducer';

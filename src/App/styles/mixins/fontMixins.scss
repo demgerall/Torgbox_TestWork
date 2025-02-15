@@ -42,10 +42,17 @@
     letter-spacing: var(--letter-spacing);
     line-height: var(--line-height);
 }
-@mixin text-label {
+@mixin time {
     font-family: var(--font-montserrat);
-    font-size: var(--font-size-text-label);
-    font-weight: var(--weight-regular);
+    font-size: var(--font-size-time);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--letter-spacing);
+    line-height: var(--line-height);
+}
+@mixin select {
+    font-family: var(--font-montserrat);
+    font-size: var(--font-size-select);
+    font-weight: var(--weight-bold);
     letter-spacing: var(--letter-spacing);
     line-height: var(--line-height);
 }

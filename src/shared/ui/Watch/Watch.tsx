@@ -6,11 +6,10 @@ import styles from './Watch.module.scss';
 interface WatchProps {
     className?: string;
     timezoneOffset: number;
-    name: string;
 }
 
 export const Watch = (props: WatchProps) => {
-    const { className = '', timezoneOffset, name } = props;
+    const { className = '', timezoneOffset } = props;
 
     const getTimeUTC0 = () => {
         return new Date(
@@ -38,7 +37,7 @@ export const Watch = (props: WatchProps) => {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [timezoneOffset]);
 
     const hourDegrees =
         (time.getHours() % 12) * 30 + time.getMinutes() * 0.5 + 90;
@@ -48,42 +47,48 @@ export const Watch = (props: WatchProps) => {
     const clockLabels = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
     return (
-        <div className={classNames(styles.watch, [className])}>
-            <div className={styles.watch_face}>
-                <ul>
-                    {clockLabels.map((label, index) => (
-                        <li
-                            key={label}
-                            className={styles.watch_face_label}
-                            style={{
-                                transform: `rotate(${index * 30}deg)`,
-                            }}
-                        >
-                            <span
+        <div className={classNames(styles.watchBlock, [className])}>
+            <div
+                className={styles.watch}
+                title={time.toTimeString().slice(0, 9)}
+            >
+                <div className={styles.watch_face}>
+                    <ul>
+                        {clockLabels.map((label, index) => (
+                            <li
+                                key={index}
+                                className={styles.watch_face_label}
                                 style={{
-                                    transform: `rotate(${-index * 30}deg)`,
+                                    transform: `rotate(${index * 30}deg)`,
                                 }}
                             >
-                                {label}
-                            </span>
-                        </li>
-                    ))}
-                </ul>
+                                <span
+                                    style={{
+                                        transform: `rotate(${-index * 30}deg)`,
+                                    }}
+                                >
+                                    {label}
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
 
-                <div
-                    className={classNames(styles.hand, styles.second_hand)}
-                    style={{ transform: `rotate(${secondDegrees}deg)` }}
-                ></div>
-                <div
-                    className={classNames(styles.hand, styles.minute_hand)}
-                    style={{ transform: `rotate(${minuteDegrees}deg)` }}
-                ></div>
-                <div
-                    className={classNames(styles.hand, styles.hour_hand)}
-                    style={{ transform: `rotate(${hourDegrees}deg)` }}
-                ></div>
-                <div className={styles.center}></div>
+                    <div
+                        className={classNames(styles.hand, styles.second_hand)}
+                        style={{ transform: `rotate(${secondDegrees}deg)` }}
+                    ></div>
+                    <div
+                        className={classNames(styles.hand, styles.minute_hand)}
+                        style={{ transform: `rotate(${minuteDegrees}deg)` }}
+                    ></div>
+                    <div
+                        className={classNames(styles.hand, styles.hour_hand)}
+                        style={{ transform: `rotate(${hourDegrees}deg)` }}
+                    ></div>
+                    <div className={styles.center}></div>
+                </div>
             </div>
+            <div className={styles.time}>{time.toTimeString().slice(0, 9)}</div>
         </div>
     );
 };

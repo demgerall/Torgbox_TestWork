@@ -1,41 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import Skeleton from 'react-loading-skeleton';
 import { motion, Variants } from 'framer-motion';
 import classNames from 'classnames';
 
-import { getTimezones } from '@/features';
+import { WatchCard } from '@/entities';
 import { useAppDispatch, useAppSelector } from '@/shared/libs/hooks';
 
 import styles from './WatchList.module.scss';
-import { Watch } from '@/shared/ui/Watch';
-import { get } from 'node_modules/axios/index.cjs';
 
 interface WatchListProps {
     className?: string;
+    children?: React.ReactNode;
 }
 
 export const WatchList = (props: WatchListProps) => {
-    const { className = '' } = props;
+    const { className = '', children } = props;
 
-    const dispatch = useAppDispatch();
-
-    const { choosedTimezones, availableTimezones } = useAppSelector(
+    const { choosedTimezones, isLoading } = useAppSelector(
         ({ timezones }) => timezones,
     );
-
-    useEffect(() => {
-        dispatch(getTimezones());
-    }, [dispatch]);
 
     const cardsAnimationVariants: Variants = {
         hidden: {
             y: 32,
             opacity: 0,
         },
-        visible: (custom: number) => ({
+        visible: {
             y: 0,
             opacity: 1,
-            transition: { delay: custom * 0.3 },
-        }),
+        },
     };
 
     return (
@@ -45,19 +38,39 @@ export const WatchList = (props: WatchListProps) => {
             animate="visible"
             viewport={{ amount: 0.2, once: true }}
         >
-            {choosedTimezones.map((timezone, index) => (
-                <motion.li
-                    key={index}
-                    className={styles.watchList__card}
-                    custom={index + 1}
-                    variants={cardsAnimationVariants}
-                >
-                    <Watch
-                        name={timezone.name}
-                        timezoneOffset={timezone.timezoneOffset}
-                    />
-                </motion.li>
-            ))}
+            {isLoading
+                ? [...Array(5)].map(index => {
+                      return (
+                          <motion.li
+                              key={index}
+                              variants={cardsAnimationVariants}
+                          >
+                              <Skeleton
+                                  style={{
+                                      borderRadius: 32,
+                                      transition: 'all 0.3s ease-in-out',
+                                  }}
+                                  height={350}
+                                  width={250}
+                                  baseColor="var(--skeleton-base-color)"
+                                  highlightColor="var(--skeleton-highlight-color)"
+                              />
+                          </motion.li>
+                      );
+                  })
+                : choosedTimezones.map(timezone => (
+                      <motion.li
+                          key={timezone.id}
+                          variants={cardsAnimationVariants}
+                      >
+                          <WatchCard
+                              timezone={timezone}
+                              amountOfChoosedTimezones={choosedTimezones.length}
+                          />
+                      </motion.li>
+                  ))}
+
+            {children}
         </motion.ul>
     );
 };
